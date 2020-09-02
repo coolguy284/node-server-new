@@ -20,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/coolguy284/node-server-new/issues"
   },
-  "homepage": "https://github.com/coolguy284/node-server-new#readme"
+  "homepage": "https://github.com/coolguy284/node-server-new#readme",
+  "dependencies": {
+    "mime": "^2.4.6",
+    "ws": "^7.3.1"
+  }
 }
