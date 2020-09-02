@@ -1,0 +1,24 @@
+{
+  "name": "node-server2",
+  "version": "0.0.0",
+  "description": "The new and improved version of node-server.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coolguy284/node-server-new.git"
+  },
+  "keywords": [
+    "nodejs",
+    "http-server",
+    "https-server"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/coolguy284/node-server-new/issues"
+  },
+  "homepage": "https://github.com/coolguy284/node-server-new#readme"
+}
