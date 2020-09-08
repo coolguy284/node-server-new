@@ -2,8 +2,9 @@
   "name": "node-server2",
   "version": "0.0.0",
   "description": "The new and improved version of node-server.",
-  "main": "index.js",
+  "main": "manager.js",
   "scripts": {
+    "start": "node manager.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
