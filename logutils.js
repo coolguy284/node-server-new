@@ -1,4 +1,5 @@
 var util = require('util');
+var commonFlags = require('./common/flags');
 
 var consoleFormats = {
   info: {
@@ -22,7 +23,7 @@ function consoleCall(type, args, opts) {
     colors: true,
     showProxy: true,
   }, ...args);
-  
+
   let forms = Object.create(Object.prototype, {
     console: {
       configurable: true,
@@ -30,10 +31,10 @@ function consoleCall(type, args, opts) {
       get: () => {
         var finalString;
         if (type in consoleFormats) {
-          if (opts.nam) {
+          if (opts.name) {
             finalString = consoleFormats[type].name
               .replace('$(timestamp)', timestamp)
-              .replace('$(name)', opts.nam)
+              .replace('$(name)', opts.name)
               .replace('$(type)', type)
               .replace('$(value)', formattedString);
           } else {
@@ -62,6 +63,22 @@ function consoleCall(type, args, opts) {
 }
 
 function createLogger(opts) {
+  if (typeof opts != 'object') opts = {};
+  if (!('name' in opts)) opts.name = 'anonymous';
+  if (!('logFunctions' in opts)) opts.logFunctions = [];
+  if (!('doConsole' in opts)) opts.doConsole = true;
+  if (!('doFile' in opts)) opts.doFile = false;
+
+  if (opts.doConsole) opts.logFunctions.push(
+    forms => console.log(forms.console)
+  );
+  if (opts.doFile) opts.logFunctions.push(
+    forms => {
+      if (commonFlags.doLog)
+        fs.appendFile(process.argv[2] + '.log', forms.json + '\n', err => err ? console.error(err) : null);
+    }
+  );
+
   var consoleObject = new console.Console({
     stdout: process.stdout,
     stderr: process.stderr,

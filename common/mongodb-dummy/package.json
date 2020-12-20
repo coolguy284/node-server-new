@@ -1,0 +1,11 @@
+{
+  "name": "mongodb-dummy",
+  "version": "0.0.0",
+  "description": "mongodb bson dummy",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bson": "^4.1.0"
+  }
+}

@@ -1,0 +1,8 @@
+uuid format (160bit / 20byte, in hex):
+  vvttttttttttttttttsssshhhhiiiiiirrrrrrrr
+  v = id version flag (set to 1 for this version of the id)
+  t = s64be millisecond timestamp
+  s = u16be server id
+  h = u16be thread id
+  i = u24be id that is incremented till millisecond resets
+  r = u32be random data
