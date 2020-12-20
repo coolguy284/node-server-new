@@ -5,12 +5,7 @@ var cp = require('child_process');
 
 var baseLogFileName = `logs/${new Date().toISOString().replace(/:|\./g, '-')}`;
 
-var logger = require('./logutils').createLogger({
-  name: 'manager',
-  logFunctions: [
-    forms => console.log(forms.console),
-  ]
-});
+var logger = require('./logutils').createLogger({ name: 'manager', doFile: true });
 
 var missedAcks = 0;
 var restartCount = 0;

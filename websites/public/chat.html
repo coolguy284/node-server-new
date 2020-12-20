@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+    <title>coolguy284.com: Chat</title>
+    <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0'>
+    <style>
+      html { height: 100%; }
+      body {
+        background: #e8e8ff;
+        padding: 0 0 10px;
+        height: calc(100% - 40px);
+      }
+      h1, h2, h4, p { font-family: Arial; color: #383850; }
+      h1 { margin: 0; }
+      h2 { margin: 10px 0 10px; }
+      #menu {
+        background: #c8c8ff;
+        position: relative;
+        left: 50%;
+        margin-left: -410px;
+        width: 800px;
+        height: 100%;
+        padding: 10px;
+      }
+      #menutop {
+        background: #a8a8ff;
+        text-align: center;
+        margin: 0;
+        padding: 5px 0 5px;
+      }
+      #rooms div {
+        background: #fff;
+        padding: 5px;
+        margin: 0;
+        cursor: pointer;
+      }
+      #rooms div h4, #rooms div p {
+        margin: 5px;
+      }
+      @media only screen and (max-width: 845px) {
+        #menu {
+          position: relative;
+          left: 0;
+          margin: 0 5px 0;
+          width: calc(100% - 30px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id = 'menu'>
+      <div id = 'menutop'>
+        <h1>coolguy284.com: Chat</h1>
+      </div>
+      <fieldset>
+        <legend><h2>Public Lobbies</h2></legend>
+        <div id = 'rooms'>
+          <div onclick = 'document.write("")'>
+            <h4>Main Chatroom 1</h4>
+            <p>The main chatroom.</p>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </body>
+</html>
