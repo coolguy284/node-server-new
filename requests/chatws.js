@@ -51,11 +51,13 @@ module.exports = function chatWSFunc(ws, req, requestProps) {
                 !common.globalVars.chatChannelConns[conn.channel]
               ) common.globalVars.chatChannelConns[conn.channel] = { ws };
               ws.send(JSON.stringify({
+                id: msg.id,
                 type: 'set_focus_ack',
                 channel: msg.channel,
               }));
             } else {
               ws.send(JSON.stringify({
+                id: msg.id,
                 type: 'error',
                 code: 'NO_CHANNEL',
                 description: 'channel not found',
@@ -64,6 +66,7 @@ module.exports = function chatWSFunc(ws, req, requestProps) {
             }
           } else {
             ws.send(JSON.stringify({
+              id: msg.id,
               type: 'error',
               code: 'NO_CHANNEL',
               description: 'channel not found',
@@ -73,6 +76,7 @@ module.exports = function chatWSFunc(ws, req, requestProps) {
           break;
         default:
           ws.send(JSON.stringify({
+            id: msg.id,
             type: 'error',
             code: 'INVAL_WSMSG_TYPE',
             description: 'invalid wsmessage type',
@@ -83,7 +87,10 @@ module.exports = function chatWSFunc(ws, req, requestProps) {
       logger.error(err);
       try {
         ws.send(JSON.stringify({
+          id: msg.id,
           type: 'error',
+          code: 'ERROR',
+          description: 'error',
         }));
       } catch (err2) {
         logger.error(err2);
