@@ -57,7 +57,7 @@ module.exports = {
   },
 
   getReqLogStr: requestProps =>
-    `${module.exports.currentRequestID.toString().padStart(5, '0')} ${module.exports.formatIP(requestProps.ip)} ${requestProps.proto.padEnd(5, ' ')} ${requestProps.req.url} ${requestProps.req.method} ${requestProps.url.pathname}`,
+    `${module.exports.currentRequestID.toString().padStart(5, '0')} ${module.exports.formatIP(requestProps.ip)} ${requestProps.proto.padEnd(5, ' ')} ${requestProps.req.method} ${requestProps.req.url}`,
 
   serializeReqProps: requestProps => {
     var req = requestProps.req;

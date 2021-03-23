@@ -1,9 +1,23 @@
 var fs = require('fs');
 var http = require('http');
 var https = require('https');
+var crypto = require('crypto');
 var ws = require('ws');
 var BSON = require('bson');
 var CryptoJS = require('./libs/crypto-js.min.js');
+
+try {
+  fs.readFileSync('.env').toString().split(/\r?\n/g).forEach(entry => {
+    if (entry[0] == '#') return;
+    var split = entry.split(' = ');
+    var key = split[0].trim();
+    var value = split.slice(1).join(' = ').trim();
+    process.env[key] = value;
+  });
+} catch (e) {
+  console.error('Error parsing .env');
+  console.error(e);
+}
 
 var common = require('./common/index');
 
@@ -85,7 +99,11 @@ if (common.flags.httpServer) {
   common.globalVars.httpServer.on('upgrade', common.globalVars.serverUpgradeFunc);
 }
 if (common.flags.httpsServer) {
-  common.globalVars.httpsServer = https.createServer(common.globalVars.serverFunc);
+  common.globalVars.httpsServer = https.createServer({
+    secureOptions: crypto.constants.SSL_OP_NO_TLSv1 | crypto.constants.SSL_OP_NO_TLSv1_1,// | crypto.constants.SSL_OP_NO_TLSv1_2,
+    key: fs.readFileSync(process.env.TLS_KEY),
+    cert: fs.readFileSync(process.env.TLS_CERT),
+  }, common.globalVars.serverFunc);
   common.globalVars.httpsServer.on('upgrade', common.globalVars.serverUpgradeFunc);
 }
 
@@ -101,7 +119,7 @@ if (common.flags.httpServer) {
   });
 }
 if (common.flags.httpsServer) {
-  common.globalVars.httpServer.listen(common.portTLS, () => {
+  common.globalVars.httpsServer.listen(common.portTLS, () => {
     logger.info(`node-server (https) listening on port ${common.portTLS}`);
     promises.listen.resolve();
   });

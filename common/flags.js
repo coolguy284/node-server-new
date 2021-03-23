@@ -1,9 +1,9 @@
 module.exports = {
   httpServer: true,
-  httpsServer: false,
+  httpsServer: true,
   stdinREPL: true,
   doLog: false,
-  trueMongo: true,
+  trueMongo: false,
   serverID: 1,
   threadID: 1,
   limits: {

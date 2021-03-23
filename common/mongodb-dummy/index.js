@@ -78,6 +78,7 @@ class MongoClient {
   constructor() {
     this.databases = {};
     this.nameToEnc = {};
+    if (!fs.existsSync(`data`)) fs.mkdirSync(`data`);
     var dbNames = fs.readdirSync(`data`);
     var name, encryptedName;
     for (var i in dbNames) {
