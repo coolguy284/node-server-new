@@ -22,7 +22,7 @@ module.exports = {
 
   isSubDir: (parent, dir) => {
     var relativePath = path.relative(parent, dir);
-    return relativePath && relativePath != '..' && !relativePath.startsWith('../');
+    return relativePath && relativePath != '..' && !relativePath.startsWith('..' + path.sep) && !path.isAbsolute(relativePath);
   },
 
   getRequestProps: (req, res, type) => {
