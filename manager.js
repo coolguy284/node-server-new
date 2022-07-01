@@ -12,7 +12,7 @@ var restartCount = 0;
 
 var proc = null;
 
-setTimeout(() => {
+var serverManageFunc = () => {
   if (!proc) {
     // runs if node-server was freshly restarted or just starting up
     logger.info(`starting node-server`);
@@ -60,7 +60,9 @@ setTimeout(() => {
     missedAcks++;
     proc.send({ type: 'ping' });
   }
-}, 60000);
+};
+serverManageFunc();
+setInterval(serverManageFunc, 60000);
 
 // perform a shutdown if Ctrl+C is pressed
 process.on('SIGINT', () => {
