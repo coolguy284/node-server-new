@@ -45,6 +45,7 @@ module.exports = {
       requestProps.res.writeHead(head || 200, {
         'Content-Type': `${mimeType}; charset=utf-8`,
         'Content-Length': stats.size,
+        'X-Robots-Tag': 'noindex',
       });
       var readStream = fs.createReadStream(filename);
       readStream.pipe(requestProps.res);
