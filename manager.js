@@ -60,7 +60,7 @@ setTimeout(() => {
     missedAcks++;
     proc.send({ type: 'ping' });
   }
-}, 1000);
+}, 60000);
 
 // perform a shutdown if Ctrl+C is pressed
 process.on('SIGINT', () => {
