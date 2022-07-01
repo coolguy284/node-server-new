@@ -40,7 +40,7 @@ var serverManageFunc = () => {
     proc.on('exit', (code, signal) => {
       logger.info(`node-server exited with code ${code}, signal [${signal}]`);
 
-      if (code == 0) {
+      if (code == 0 || code == null && signal == 'SIGINT') {
         process.exit();
       } else {
         proc = null;
