@@ -12,10 +12,12 @@ module.exports = async function serverFunc(req, res) {
   try {
     var requestProps = common.getRequestProps(req, res, 'main');
 
-    logger.info(common.getReqLogStr(requestProps));
-    common.globalVars.serializedReqs.push(JSON.stringify(common.serializeReqProps(requestProps)));
-    if (common.globalVars.serializedReqs.length > common.flags.limits.serializedReqs)
-      common.globalVars.serializedReqs.splice(0, common.globalVars.serializedReqs.length - common.flags.limits.serializedReqs);
+    if (!common.flags.doNoLogHeader || req.headers['x-c284-nolog'] != '1') {
+      logger.info(common.getReqLogStr(requestProps));
+      common.globalVars.serializedReqs.push(JSON.stringify(common.serializeReqProps(requestProps)));
+      if (common.globalVars.serializedReqs.length > common.flags.limits.serializedReqs)
+        common.globalVars.serializedReqs.splice(0, common.globalVars.serializedReqs.length - common.flags.limits.serializedReqs);
+    }
 
     switch (req.method.toUpperCase()) {
       case 'GET': await getMethod(requestProps); break;

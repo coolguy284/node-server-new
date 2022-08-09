@@ -1,8 +1,9 @@
 module.exports = {
   httpServer: process.env.HTTP ? process.env.HTTP == 'true' : true,
   httpsServer: process.env.HTTPS ? process.env.HTTPS == 'true' : false,
+  doNoLogHeader: true,
   stdinREPL: true,
-  doLog: false,
+  doFileLog: false,
   trueMongo: false,
   serverID: 1,
   threadID: 1,

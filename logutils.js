@@ -74,7 +74,7 @@ function createLogger(opts) {
   );
   if (opts.doFile) opts.logFunctions.push(
     forms => {
-      if (commonFlags.doLog)
+      if (commonFlags.doFileLog)
         fs.appendFile(process.argv[2] + '.log', forms.json + '\n', err => err ? console.error(err) : null);
     }
   );
