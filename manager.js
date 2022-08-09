@@ -9,6 +9,7 @@ var logger = require('./logutils').createLogger({ name: 'manager', doFile: true 
 
 var missedAcks = 0;
 var restartCount = 0;
+var finalExit = false;
 
 var proc = null;
 
@@ -40,7 +41,7 @@ var serverManageFunc = () => {
     proc.on('exit', (code, signal) => {
       logger.info(`node-server exited with code ${code}, signal [${signal}]`);
 
-      if (code == 0 || code == null && signal == 'SIGINT') {
+      if (code == 0 || code == null && signal == 'SIGINT' || finalExit) {
         process.exit();
       } else {
         proc = null;
@@ -67,7 +68,7 @@ setInterval(serverManageFunc, 60000);
 // perform a shutdown if Ctrl+C is pressed
 process.on('SIGINT', () => {
   logger.info(`Ctrl+C pressed, manager and server shutting down`);
-  if (proc) {
+  if (proc)
     process.kill(proc.pid, 'SIGINT');
-  }
+  finalExit = true;
 });

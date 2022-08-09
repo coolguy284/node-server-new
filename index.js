@@ -19,6 +19,8 @@ try {
   console.error(e);
 }
 
+if (process.env.MONGODB_DUMMY_PASS == null) process.env.MONGODB_DUMMY_PASS = '';
+
 var common = require('./common/index');
 
 var logger = require('./logutils').createLogger({ name: 'main', doFile: true });
