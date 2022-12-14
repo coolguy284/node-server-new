@@ -1,5 +1,5 @@
 {
-  "name": "node-server2",
+  "name": "node-server-new",
   "version": "0.0.0",
   "description": "The new and improved version of node-server.",
   "main": "manager.js",
@@ -23,9 +23,9 @@
   },
   "homepage": "https://github.com/coolguy284/node-server-new#readme",
   "dependencies": {
-    "bson": "^4.6.5",
+    "bson": "^4.7.0",
     "mime": "^3.0.0",
-    "mongodb": "^4.8.1",
-    "ws": "^8.8.1"
+    "mongodb": "^4.12.1",
+    "ws": "^8.11.0"
   }
 }
