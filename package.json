@@ -23,9 +23,9 @@
   },
   "homepage": "https://github.com/coolguy284/node-server-new#readme",
   "dependencies": {
-    "bson": "^7.2.0",
+    "bson": "^7.3.1",
     "mime": "^4.1.0",
-    "mongodb": "^7.2.0",
-    "ws": "^8.20.1"
+    "mongodb": "^7.4.0",
+    "ws": "^8.21.0"
   }
 }
