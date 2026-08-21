@@ -17,7 +17,7 @@
     "https-server"
   ],
   "author": "",
-  "license": "ISC",
+  "license": "(Unlicense OR MIT)",
   "bugs": {
     "url": "https://github.com/coolguy284/node-server-new/issues"
   },
