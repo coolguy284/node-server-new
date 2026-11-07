@@ -29,6 +29,7 @@ module.exports = {
     var requestProps = {
       type,
       req, res,
+      id: null,
       ip: req.socket.remoteAddress,
       proto: req.socket.encrypted ? 'https' : 'http',
       host: null,
@@ -56,16 +57,20 @@ module.exports = {
     
     requestProps.doLog = !common.flags.doNoLogHeader || req.headers['x-c284-nolog'] != '1';
     
+    if (requestProps.doLog) {
+      requestProps.id = module.exports.currentRequestID++;
+    }
+    
     return requestProps;
   },
   
   getReqLogStr: requestProps =>
-    `${module.exports.currentRequestID.toString().padStart(5, '0')} ${module.exports.formatIP(requestProps.ip)} ${requestProps.proto.padEnd(5, ' ')} ${requestProps.req.method} ${requestProps.req.url}`,
+    `${requestProps.id.toString().padStart(5, '0')} ${module.exports.formatIP(requestProps.ip)} ${requestProps.proto.padEnd(5, ' ')} ${requestProps.req.method} ${requestProps.req.url}`,
   
   serializeReqProps: requestProps => {
     var req = requestProps.req;
     return {
-      id: requestProps.doLog ? module.exports.currentRequestID : null,
+      id: requestProps.id,
       timestamp: requestProps.timestamp.toISOString(),
       doLog: requestProps.doLog,
       httpVersion: req.httpVersion,
@@ -94,7 +99,6 @@ module.exports = {
           module.exports.globalVars.serializedReqs.splice(0, module.exports.globalVars.serializedReqs.length - module.exports.flags.limits.serializedReqs);
         }
       }
-      module.exports.currentRequestID++;
     }
   },
   

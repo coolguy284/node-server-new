@@ -1,5 +1,3 @@
-var fs = require('fs');
-
 var common = require('../common/index');
 var getMethod = require('./get');
 var headMethod = require('./head');
