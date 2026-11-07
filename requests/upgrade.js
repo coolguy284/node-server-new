@@ -5,16 +5,8 @@ var logger = require('../logutils').createLogger({ name: 'requests/upgr', doFile
 module.exports = function serverUpgradeFunc(req, socket, head) {
   try {
     var requestProps = common.getRequestProps(req, null, 'upgrade');
-
-    if (requestProps.doLog) {
-      logger.info(common.getReqLogStr(requestProps));
-      if (common.flags.limits.serializedReqs > 0) {
-        common.globalVars.serializedReqs.push(JSON.stringify(common.serializeReqProps(requestProps)));
-        if (common.globalVars.serializedReqs.length > common.flags.limits.serializedReqs)
-          common.globalVars.serializedReqs.splice(0, common.globalVars.serializedReqs.length - common.flags.limits.serializedReqs);
-      }
-      common.currentRequestID++;
-    }
+    
+    common.logRequest(requestProps, logger);
     
     if (requestProps.url.pathname == '/chat_ws') {
       globalVars.chatWSServer.handleUpgrade(req, socket, head, ws => {

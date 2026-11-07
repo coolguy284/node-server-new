@@ -85,6 +85,19 @@ module.exports = {
     };
   },
   
+  logRequest: (requestProps, logger) => {
+    if (requestProps.doLog) {
+      logger.info(module.exports.getReqLogStr(requestProps));
+      if (module.exports.flags.limits.serializedReqs > 0) {
+        module.exports.globalVars.serializedReqs.push(JSON.stringify(module.exports.serializeReqProps(requestProps)));
+        if (module.exports.globalVars.serializedReqs.length > module.exports.flags.limits.serializedReqs) {
+          module.exports.globalVars.serializedReqs.splice(0, module.exports.globalVars.serializedReqs.length - module.exports.flags.limits.serializedReqs);
+        }
+      }
+      module.exports.currentRequestID++;
+    }
+  },
+  
   send: require('./send'),
   
   dbutils: require('./dbutils'),

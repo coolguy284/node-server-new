@@ -56,14 +56,6 @@ var promises = {
 };
 
 Object.assign(global, { BSON, CryptoJS, common, logger, promises });
-Object.defineProperties(global, {
-  currentRequestID: {
-    configurable: true,
-    enumerable: true,
-    get: () => common.currentRequestID,
-    set: val => common.currentRequestID = val,
-  },
-});
 
 // used to respond to pings from manager.js
 process.on('message', msg => {
