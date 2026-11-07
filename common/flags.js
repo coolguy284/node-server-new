@@ -8,7 +8,7 @@ module.exports = {
   serverID: 1,
   threadID: 1,
   limits: {
-    serializedReqs: 100000,
+    serializedReqs: 0,
     chat: {
       contentLength: 4096,
       extraDataLength: 2 ** 22,
