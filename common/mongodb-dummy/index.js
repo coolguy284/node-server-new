@@ -32,12 +32,12 @@ class Database {
       }
     }
   }
-
+  
   collection(name) {
     if (name in this.collectionObjs) return this.collectionObjs[name];
     else return this.collectionObjs[name] = new Collection(this, name);
   }
-
+  
   _save() {
     var collNames = Object.keys(this.collections);
     var name, encryptedName;
@@ -87,11 +87,11 @@ class MongoClient {
       this.nameToEnc[name] = encryptedName;
     }
   }
-
+  
   connect(cb) {
     cb(null);
   }
-
+  
   db(name) {
     if (typeof name != 'string') throw new Error('database name must be string');
     if (name in this.databases) {
@@ -105,11 +105,11 @@ class MongoClient {
       return this.databases[name] = new Database(`data/${encryptedName}`);
     }
   }
-
+  
   close() {
     this._save();
   }
-
+  
   _save() {
     var dbs = Object.keys(this.databases);
     for (var i in dbs) {

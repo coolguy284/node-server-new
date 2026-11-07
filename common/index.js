@@ -38,7 +38,7 @@ module.exports = {
       doLog: null,
       timestamp: new Date(),
     };
-
+    
     if ('host' in req.headers) {
       if (/[a-z0-9-]+/.test(req.headers.host))
         requestProps.host = req.headers.host;
@@ -47,12 +47,12 @@ module.exports = {
     } else {
       requestProps.host = 'NULL';
     }
-
+    
     requestProps.urlString = req.url.replace(/[@:]+/g, '');
-
+    
     if (!requestProps.urlString.startsWith('/'))
       requestProps.urlString = '/' + requestProps.urlString;
-
+    
     requestProps.url = new URL(`${requestProps.proto == 'http' ? 'http' : 'https'}://${requestProps.host}${requestProps.urlString}`);
     
     requestProps.doLog = !common.flags.doNoLogHeader || req.headers['x-c284-nolog'] != '1';

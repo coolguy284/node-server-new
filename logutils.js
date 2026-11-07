@@ -23,7 +23,7 @@ function consoleCall(type, args, opts) {
     colors: true,
     showProxy: true,
   }, ...args);
-
+  
   let forms = Object.create(Object.prototype, {
     console: {
       configurable: true,
@@ -47,7 +47,7 @@ function consoleCall(type, args, opts) {
         return finalString;
       }
     },
-
+    
     json: {
       configurable: true,
       enumerable: true,
@@ -58,7 +58,7 @@ function consoleCall(type, args, opts) {
       }),
     }
   });
-
+  
   opts.logFunctions.forEach(func => func(forms));
 }
 
@@ -68,7 +68,7 @@ function createLogger(opts) {
   if (!('logFunctions' in opts)) opts.logFunctions = [];
   if (!('doConsole' in opts)) opts.doConsole = true;
   if (!('doFile' in opts)) opts.doFile = false;
-
+  
   if (opts.doConsole) opts.logFunctions.push(
     forms => console.log(forms.console)
   );
@@ -78,16 +78,18 @@ function createLogger(opts) {
         fs.appendFile(process.argv[2] + '.log', forms.json + '\n', err => err ? console.error(err) : null);
     }
   );
-
+  
   var consoleObject = new console.Console({
     stdout: process.stdout,
     stderr: process.stderr,
   });
+  /*
   var consoleFuncs = {
     info: consoleObject.info,
     warn: consoleObject.warn,
     error: consoleObject.error,
   };
+  */
   consoleObject.info = (...args) => consoleCall('info', args, opts);
   consoleObject.warn = (...args) => consoleCall('warn', args, opts);
   consoleObject.error = (...args) => consoleCall('error', args, opts);

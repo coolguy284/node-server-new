@@ -3,7 +3,7 @@ var crypto = require('crypto');
 var commonFlags = require('./flags');
 var common = require('./index');
 
-var logger = require('../logutils').createLogger({ name: 'common/chatutils', doFile: true });
+// var logger = require('../logutils').createLogger({ name: 'common/chatutils', doFile: true });
 
 /*
   permission bitfield values:
@@ -53,7 +53,7 @@ exports = module.exports = {
       random: uuid.readUInt32BE(16),
     };
   },
-
+  
   serializeUUID: parsedObj => {
     var uuid = Buffer.alloc(16);
     uuid.writeUInt8(parsedObj.version, 0);
@@ -64,16 +64,16 @@ exports = module.exports = {
     uuid.writeUInt32BE(parsedObj.random, 16);
     return uuid;
   },
-
+  
   stringifyUUID: parsedObj => exports.serializeUUID(parsedObj).toString('base64').replace(/\//g, '_'),
-
+  
   bufToStrUUID: buf => buf.toString('base64').replace(/\//g, '_'),
   strToBufUUID: str => Buffer.from(str.replace(/_/g, '/'), 'base64'),
-
+  
   createUUID: () => {
     var uuid = Buffer.alloc(16);
     var timestamp = BigInt(Date.now());
-
+    
     uuid.writeUInt8(1, 0);
     uuid.writeBigInt64BE(timestamp, 1);
     uuid.writeUInt16BE(commonFlags.serverID, 9);
@@ -84,10 +84,10 @@ exports = module.exports = {
       common.entityID++;
     uuid.writeUIntBE(common.entityID, 13, 3);
     crypto.randomBytes(4).copy(uuid, 16);
-
+    
     return uuid;
   },
-
+  
   /*
     chatMsg : object {
       _id : binData (message uuid),
@@ -148,7 +148,7 @@ exports = module.exports = {
         extraData: typeof chatMsgObj.extraData == 'object' ? chatMsgObj.extraData : {},
         reacts: Array.isArray(chatMsgObj.reacts) ? chatMsgObj.reacts : [],
       };
-
+    
     if (chatMsgObj.content.length > commonFlags.limits.chat.contentLength)
       throw new Error(`chat message length ${chatMsgObj.content.length}, limit ${commonFlags.limits.chat.contentLength}`);
     
@@ -156,10 +156,10 @@ exports = module.exports = {
     
     if (extraDataLength > commonFlags.limits.chat.extraDataLength)
       throw new Error(`extraData length ${extraDataLength}, limit ${commonFlags.limits.chat.extraDataLength}`);
-
+    
     return chatMsgObj;
   },
-
+  
   /*
     channelIndexEntry : object {
       _id : binData (channel id),
@@ -222,22 +222,22 @@ exports = module.exports = {
         name: channelEntry.name || null,
         desc: channelEntry.desc || null,
       };
-
+    
     if (!channelEntry.version) channelEntry.version = 1;
-
+    
     if (!channelEntry.puuid) channelEntry.puuid = Buffer.alloc(20);
     if (!channelEntry.uuid) channelEntry.uuid = exports.createUUID();
-
+    
     if (typeof channelEntry.name == 'string')
       channelEntry.name = Buffer.from(channelEntry.name);
     
     if (!channelEntry.name) channelEntry.name = Buffer.alloc(0);
-
+    
     if (typeof channelEntry.desc == 'string')
       channelEntry.desc = Buffer.from(channelEntry.desc);
     
     if (!channelEntry.desc) channelEntry.desc = Buffer.alloc(0);
-
+    
     return channelEntry;
   },
 };

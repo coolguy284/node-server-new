@@ -9,9 +9,9 @@ module.exports = function chatWSFunc(ws, req, requestProps) {
     sessionIDStr: null,
     channel: null,
   };
-
+  
   conn.sessionIDStr = common.dbutils.bufToStrUUID(sessionID);
-
+  
   ws.on('message', msg => {
     try {
       try {
@@ -97,6 +97,6 @@ module.exports = function chatWSFunc(ws, req, requestProps) {
       }
     }
   });
-
+  
   ws.on('close', () => delete common.globalVars.chatConns[sessionIDStr]);
 };

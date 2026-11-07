@@ -36,7 +36,7 @@ if (common.flags.trueMongo) {
 
 function externResolvePromise() {
   var obj = {};
-
+  
   obj.promise = new Promise((resolve, reject) => {
     obj.resolve = () => {
       obj.resolvedTimestamp = Date.now();
@@ -47,7 +47,7 @@ function externResolvePromise() {
       reject(err);
     };
   });
-
+  
   return obj;
 }
 
@@ -140,7 +140,7 @@ if (common.flags.stdinREPL) {
       preview: true,
       breakEvalOnSigint: true,
     });
-
+    
     common.globalVars.replServer.on('exit', exitHandler);
   });
 }
