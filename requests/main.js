@@ -11,14 +11,17 @@ var logger = require('../logutils').createLogger({ name: 'requests/main', doFile
 module.exports = async function serverFunc(req, res) {
   try {
     var requestProps = common.getRequestProps(req, res, 'main');
-
-    if (!common.flags.doNoLogHeader || req.headers['x-c284-nolog'] != '1') {
+    
+    if (requestProps.doLog) {
       logger.info(common.getReqLogStr(requestProps));
-      common.globalVars.serializedReqs.push(JSON.stringify(common.serializeReqProps(requestProps)));
-      if (common.globalVars.serializedReqs.length > common.flags.limits.serializedReqs)
-        common.globalVars.serializedReqs.splice(0, common.globalVars.serializedReqs.length - common.flags.limits.serializedReqs);
+      if (common.flags.limits.serializedReqs > 0) {
+        common.globalVars.serializedReqs.push(JSON.stringify(common.serializeReqProps(requestProps)));
+        if (common.globalVars.serializedReqs.length > common.flags.limits.serializedReqs)
+          common.globalVars.serializedReqs.splice(0, common.globalVars.serializedReqs.length - common.flags.limits.serializedReqs);
+      }
+      common.currentRequestID++;
     }
-
+    
     switch (req.method.toUpperCase()) {
       case 'GET': await getMethod(requestProps); break;
       case 'HEAD': await headMethod(requestProps); break;
@@ -26,7 +29,6 @@ module.exports = async function serverFunc(req, res) {
       case 'OPTIONS': await optionsMethod(requestProps); break;
       default: res.writeHead(501); res.end(); break;
     }
-    common.currentRequestID++;
   } catch (err) {
     logger.error(err);
     try {

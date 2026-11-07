@@ -3,28 +3,28 @@ var path = require('path');
 module.exports = {
   port: process.env.PORT || 8080,
   portTLS: process.env.PORTTLS || 8443,
-
+  
   flags: require('./flags'),
-
+  
   currentRequestID: 0,
-
+  
   entityID: 0,
   entityTimestamp: 0n,
-
+  
   globalVars: require('./globalvars'),
-
+  
   formatIP: ip => {
     if (typeof ip != 'string') return '';
     if (/^::ffff:[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/.test(ip)) {
       return '::ffff:' + ip.slice(7, Infinity).split('.').map(x => x.padStart('-', 3)).join('.');
     }
   },
-
+  
   isSubDir: (parent, dir) => {
     var relativePath = path.relative(parent, dir);
     return relativePath && relativePath != '..' && !relativePath.startsWith('..' + path.sep) && !path.isAbsolute(relativePath);
   },
-
+  
   getRequestProps: (req, res, type) => {
     var requestProps = {
       type,
@@ -34,6 +34,7 @@ module.exports = {
       host: null,
       urlString: null,
       url: null,
+      doLog: null,
       timestamp: new Date(),
     };
 
@@ -52,18 +53,21 @@ module.exports = {
       requestProps.urlString = '/' + requestProps.urlString;
 
     requestProps.url = new URL(`${requestProps.proto == 'http' ? 'http' : 'https'}://${requestProps.host}${requestProps.urlString}`);
-
+    
+    requestProps.doLog = !common.flags.doNoLogHeader || req.headers['x-c284-nolog'] != '1';
+    
     return requestProps;
   },
-
+  
   getReqLogStr: requestProps =>
     `${module.exports.currentRequestID.toString().padStart(5, '0')} ${module.exports.formatIP(requestProps.ip)} ${requestProps.proto.padEnd(5, ' ')} ${requestProps.req.method} ${requestProps.req.url}`,
-
+  
   serializeReqProps: requestProps => {
     var req = requestProps.req;
     return {
-      id: module.exports.currentRequestID,
+      id: requestProps.doLog ? module.exports.currentRequestID : null,
       timestamp: requestProps.timestamp.toISOString(),
+      doLog: requestProps.doLog,
       httpVersion: req.httpVersion,
       method: req.method,
       url: req.url,
@@ -80,9 +84,9 @@ module.exports = {
       },
     };
   },
-
+  
   send: require('./send'),
-
+  
   dbutils: require('./dbutils'),
   chatutils: require('./chatutils'),
 };
